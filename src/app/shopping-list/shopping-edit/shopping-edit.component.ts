@@ -2,10 +2,9 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@
 import { NgForm } from '@angular/forms';
 import { Subscribable, Subscription } from 'rxjs';
 import { Ingredient } from 'src/app/shared/Ingredient.model';
-import { ShoppingListService } from '../shoppingList.service';
 import { Store } from '@ngrx/store';
 import { AddIngredient, DeleteIngredient, IngredientStopEdit, UpdateIngredient } from '../store/shoppinglist.actions';
-import { ShoppingListAppState } from '../store/shoppingList.recducer';
+import { AppState } from 'src/app/state/app.reducer';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -24,7 +23,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   shoppingEditForm: NgForm;
 
 
-  constructor(private shoppingListService: ShoppingListService, private store : Store<ShoppingListAppState>) { }
+  constructor(private store : Store<AppState>) { }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
     this.store.dispatch(new IngredientStopEdit());

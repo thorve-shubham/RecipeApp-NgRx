@@ -3,6 +3,9 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
 import { DataStorageService } from '../shared/data-storage.service';
+import { AppState } from '../state/app.reducer';
+import { Store } from '@ngrx/store';
+import { Logout } from '../auth/store/auth.actions';
 
 @Component({
   selector: 'app-header',
@@ -16,14 +19,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isAuthenticated : boolean = false;
 
   constructor(private dataStoreService : DataStorageService,
-    private authSrvice: AuthService) { }
+    private authSrvice: AuthService,
+    private store: Store<AppState>) { }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.subscription = this.authSrvice.user.subscribe(user=>{
-      this.isAuthenticated = !!user;
+    this.subscription = this.store.select('auth').subscribe(authState=>{
+      this.isAuthenticated = !!authState.user;
     })
   }
 

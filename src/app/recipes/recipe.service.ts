@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
-import { Ingredient } from '../shared/Ingredient.model';
-import { ShoppingListService } from '../shopping-list/shoppingList.service';
 import { Recipe } from './recipe.model';
 
 @Injectable()
