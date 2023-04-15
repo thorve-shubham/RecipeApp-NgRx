@@ -19,7 +19,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isAuthenticated : boolean = false;
 
   constructor(private dataStoreService : DataStorageService,
-    private authSrvice: AuthService,
     private store: Store<AppState>) { }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -40,7 +39,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logOut() { 
-    this.authSrvice.logOut();
+    this.store.dispatch(new Logout())
   }
 
 }
