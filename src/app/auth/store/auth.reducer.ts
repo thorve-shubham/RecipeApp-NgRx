@@ -18,7 +18,7 @@ export function authReducer(state : AuthState =initialState, action : AuthAction
         case LOGIN:
             return {
                 ...state,
-                user : (action as Login).payload,
+                user : (action as Login).payload.user,
                 authError : null,
                 loading : false
             }

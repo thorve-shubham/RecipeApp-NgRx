@@ -55,7 +55,7 @@ export class AuthEffect {
                     returnSecureToken: true
                 }).pipe(
                     tap((resData)=>{
-                        this.authService.setLogOutTimer(+resData.expiresIn)
+                        this.authService.setLogOutTimer(+resData.expiresIn * 1000)
                     }),
                     map(resData=>{
                         return this.handleAuthentication(resData.email,resData.localId,resData.idToken,+resData.expiresIn);
@@ -71,8 +71,9 @@ export class AuthEffect {
     routeHandler$ = createEffect(()=>{
         return this.actions$.pipe(
             ofType(LOGIN),
-            tap(() => {
-                this.router.navigate(['/']);
+            tap((actionPayload : Login) => {
+                if(actionPayload.payload.redirect)
+                    this.router.navigate(['/']);
             })
         );
     },
@@ -106,7 +107,7 @@ export class AuthEffect {
                 if(loadedUser.token){
                     const expiresIn = new Date(user._tokenExpirationDate).getTime() - new Date().getTime();
                     this.authService.setLogOutTimer(expiresIn);
-                    return new Login(loadedUser);
+                    return new Login({ user : loadedUser, redirect : false});
                 }
             })
         )
@@ -116,7 +117,7 @@ export class AuthEffect {
         const expirationDate = new Date(new Date().getTime() + expiresIn *1000);
         const user = new User(email,localId,token,expirationDate);
         localStorage.setItem("user",JSON.stringify(user));
-        return new Login(user);
+        return new Login({ user: user, redirect: true});
     }
 
     private handleErrorResponse (errorResponse: HttpErrorResponse) {

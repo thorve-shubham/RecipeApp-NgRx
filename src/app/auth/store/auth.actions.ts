@@ -11,7 +11,7 @@ export const AUTO_LOGIN = "AUTO_LOGIN";
 
 export class Login implements Action {
     readonly type: string = LOGIN;
-    constructor(public payload: User) {}
+    constructor(public payload: { user : User, redirect: boolean }) {}
 }
 
 export class Logout implements Action {
